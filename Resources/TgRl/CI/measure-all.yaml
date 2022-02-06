@@ -33,3 +33,9 @@ jobs:
 - template: measure.yaml
   parameters:
     project: 'WinMmTimer'
+- template: measure.yaml
+  parameters:
+    project: 'InfiniteLoopTimerWithThreadYield'
+- template: measure.yaml
+  parameters:
+    project: 'InfiniteLoopTimerWithThreadYield2'
