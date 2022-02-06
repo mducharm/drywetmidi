@@ -21,12 +21,14 @@ namespace InfiniteLoopTimerWithThreadYield
 
                 while (_running)
                 {
-                    if (stopwatch.ElapsedMilliseconds - lastTime < intervalMs)
-                        continue;
+                    if (stopwatch.ElapsedMilliseconds - lastTime >= intervalMs)
+                    {
+                        callback();
+                        lastTime = stopwatch.ElapsedMilliseconds;
+                    }
 
-                    callback();
-                    lastTime = stopwatch.ElapsedMilliseconds;
-                    Thread.Yield();
+                    if (!Thread.Yield())
+                        Thread.Sleep(0);
                 }
             });
 
