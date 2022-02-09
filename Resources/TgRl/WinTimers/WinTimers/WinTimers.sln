@@ -27,7 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfiniteLoopTimer", "Infini
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfiniteLoopTimerWithThreadYield", "InfiniteLoopTimerWithThreadYield\InfiniteLoopTimerWithThreadYield.csproj", "{5EDC7F1A-6F4F-4413-A77A-3460F9D28792}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PreciseTimer", "PreciseTimer\PreciseTimer.csproj", "{1E9A16D5-E7BD-4591-9319-A4B8AF887812}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfiniteLoopTimerWithNtDelayExecution", "InfiniteLoopTimerWithNtDelayExecution\InfiniteLoopTimerWithNtDelayExecution.csproj", "{1E9A16D5-E7BD-4591-9319-A4B8AF887812}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfiniteLoopTimerWithSleep", "InfiniteLoopTimerWithSleep\InfiniteLoopTimerWithSleep.csproj", "{FAC6BB84-75F8-45CF-9C9C-C293ED899D84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{1E9A16D5-E7BD-4591-9319-A4B8AF887812}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E9A16D5-E7BD-4591-9319-A4B8AF887812}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E9A16D5-E7BD-4591-9319-A4B8AF887812}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAC6BB84-75F8-45CF-9C9C-C293ED899D84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAC6BB84-75F8-45CF-9C9C-C293ED899D84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAC6BB84-75F8-45CF-9C9C-C293ED899D84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAC6BB84-75F8-45CF-9C9C-C293ED899D84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

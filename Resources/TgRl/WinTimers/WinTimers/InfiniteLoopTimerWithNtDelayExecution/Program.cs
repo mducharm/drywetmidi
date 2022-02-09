@@ -1,7 +1,6 @@
-﻿using System;
-using Common;
+﻿using Common;
 
-namespace PreciseTimer
+namespace InfiniteLoopTimerWithNtDelayExecution
 {
     class Program
     {
