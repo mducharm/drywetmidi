@@ -31,3 +31,18 @@ jobs:
       targetPath: '$(Build.SourcesDirectory)/Deltas'
       artifactName: 'Deltas_${{ parameters.project }}'
       artifactType: pipeline
+      
+  - task: PowerShell@2
+    displayName: Collect CPU usage
+    inputs:
+      targetType: 'inline'
+      script: |
+        New-Item -Path "$(Build.SourcesDirectory)" -Name "CPU" -ItemType "directory"
+        Copy-Item -Path "$(Build.SourcesDirectory)/cpu_*.txt" -Destination "$(Build.SourcesDirectory)/CPU"
+        
+  - task: PublishPipelineArtifact@1
+    displayName: Publish 'CPU' artifact
+    inputs:
+      targetPath: '$(Build.SourcesDirectory)/CPU'
+      artifactName: 'CPU_${{ parameters.project }}'
+      artifactType: pipeline
