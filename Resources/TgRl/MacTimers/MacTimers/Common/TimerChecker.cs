@@ -35,21 +35,38 @@ namespace Common
             var cpuUsage = new List<float>((int)Math.Ceiling(MeasurementDuration.TotalMilliseconds / CpuMeasurementInterval.TotalMilliseconds));
             
             var stopwatch = new Stopwatch();
-            var cpuCounter = new PerformanceCounter("Process", "% Processor Time", Process.GetCurrentProcess().ProcessName);
+            
             var cpuTimer = new System.Timers.Timer(CpuMeasurementInterval.TotalMilliseconds);
             var cpuStep = 0;
+
+            var cpuUsageStopwatch = new Stopwatch();
+            var startCpuUsage = TimeSpan.Zero;
+            var startTime = 0L;
+
             cpuTimer.Elapsed += (_, _) =>
             {
-                var value = cpuCounter.NextValue();
                 if (cpuStep++ % 2 != 0)
-                    cpuUsage.Add(value / Environment.ProcessorCount);
+                {
+                    var endTime = DateTime.UtcNow;
+                    var endCpuUsage = Process.GetCurrentProcess().TotalProcessorTime;
+                    var cpuUsedMs = (float)(endCpuUsage - startCpuUsage).TotalMilliseconds;
+                    var totalMsPassed = cpuUsageStopwatch.ElapsedMilliseconds - startTime;
+                    var cpuUsageTotal = cpuUsedMs / (Environment.ProcessorCount * totalMsPassed);
+                    cpuUsage.Add(cpuUsageTotal * 100);
+                }
+                else
+                {
+                    startTime = cpuUsageStopwatch.ElapsedMilliseconds;
+                    startCpuUsage = Process.GetCurrentProcess().TotalProcessorTime;
+                }
             };
             
             Action callback = () => times.Add(stopwatch.ElapsedMilliseconds);
 
             timer.Start(intervalMs, callback);
-            cpuTimer.Start();
             stopwatch.Start();
+            cpuTimer.Start();
+            cpuUsageStopwatch.Start();
 
             Thread.Sleep(MeasurementDuration);
 
