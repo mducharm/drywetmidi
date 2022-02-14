@@ -1,0 +1,20 @@
+trigger: none
+
+name: WinTimersMeasureAll_$(Rev:.r)
+
+jobs:
+- template: measure-mac.yaml
+  parameters:
+    project: 'InfiniteLoopTimer'
+- template: measure-mac.yaml
+  parameters:
+    project: 'InfiniteLoopTimerWithThreadYield'
+- template: measure-mac.yaml
+  parameters:
+    project: 'InfiniteLoopTimerWithSleep'
+- template: measure-mac.yaml
+  parameters:
+    project: 'SystemThreadingTimer'
+- template: measure-mac.yaml
+  parameters:
+    project: 'SystemTimersTimer'

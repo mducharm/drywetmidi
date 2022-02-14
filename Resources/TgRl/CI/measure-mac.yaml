@@ -1,0 +1,48 @@
+parameters:
+- name: project
+  displayName: 'Project'
+  type: string
+
+jobs:
+- job: ${{ parameters.project }}
+  displayName: Run measurements for ${{ parameters.project }}
+  pool:
+    vmImage: 'macos-latest'
+  steps:
+  - task: DotNetCoreCLI@2
+    displayName: Run measurements
+    inputs:
+      command: 'run'
+      arguments: '--configuration Release'
+      projects: |
+        Resources/TgRl/MacTimers/MacTimers/${{ parameters.project }}/${{ parameters.project }}.csproj
+  
+  - task: PowerShell@2
+    displayName: Collect deltas
+    inputs:
+      targetType: 'inline'
+      script: |
+        New-Item -Path "$(Build.SourcesDirectory)" -Name "Deltas" -ItemType "directory"
+        Copy-Item -Path "$(Build.SourcesDirectory)/deltas_*.txt" -Destination "$(Build.SourcesDirectory)/Deltas"
+        
+  - task: PublishPipelineArtifact@1
+    displayName: Publish 'Deltas' artifact
+    inputs:
+      targetPath: '$(Build.SourcesDirectory)/Deltas'
+      artifactName: 'Deltas_${{ parameters.project }}'
+      artifactType: pipeline
+      
+  - task: PowerShell@2
+    displayName: Collect CPU usage
+    inputs:
+      targetType: 'inline'
+      script: |
+        New-Item -Path "$(Build.SourcesDirectory)" -Name "CPU" -ItemType "directory"
+        Copy-Item -Path "$(Build.SourcesDirectory)/cpu_*.txt" -Destination "$(Build.SourcesDirectory)/CPU"
+        
+  - task: PublishPipelineArtifact@1
+    displayName: Publish 'CPU' artifact
+    inputs:
+      targetPath: '$(Build.SourcesDirectory)/CPU'
+      artifactName: 'CPU_${{ parameters.project }}'
+      artifactType: pipeline
