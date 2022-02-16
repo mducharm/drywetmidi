@@ -95,7 +95,7 @@ void StartTimer(int intervalMs, TimerSessionHandle* sessionHandle, void (*callba
 		0,
 		TimerCallback,
 		&context);
-    CFRunLoopTimerSetTolerance(timerRef, seconds / 2);
+    CFRunLoopTimerSetTolerance(timerInfo->timerRef, seconds / 2);
 	CFRunLoopAddTimer(sessionHandle->runLoopRef, timerInfo->timerRef, kCFRunLoopDefaultMode);
 	
     *info = timerInfo;
