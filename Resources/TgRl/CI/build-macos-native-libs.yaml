@@ -41,3 +41,22 @@ jobs:
       targetPath: 'Resources/TgRl/MacTimers/Native/RunLoopTimer.dylib'
       artifactName: 'RunLoopTimer.dylib'
       artifactType: pipeline
+- job: BuildRunLoopTimerPrioritizedWithTolerance
+  displayName: 'Build RunLoopTimerPrioritizedWithTolerance'
+  pool:
+    vmImage: 'macos-latest'
+  steps:
+  - task: PowerShell@2
+    displayName: 'Build RunLoopTimerPrioritizedWithTolerance'
+    inputs:
+      targetType: 'inline'
+      script: |
+        cd Resources/TgRl/MacTimers/Native
+        gcc -c RunLoopTimerPrioritizedWithTolerance.c
+        gcc -shared -framework CoreServices -framework CoreFoundation -o RunLoopTimerPrioritizedWithTolerance.dylib RunLoopTimerPrioritizedWithTolerance.o
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish RunLoopTimerPrioritizedWithTolerance'
+    inputs:
+      targetPath: 'Resources/TgRl/MacTimers/Native/RunLoopTimerPrioritizedWithTolerance.dylib'
+      artifactName: 'RunLoopTimerPrioritizedWithTolerance.dylib'
+      artifactType: pipeline
