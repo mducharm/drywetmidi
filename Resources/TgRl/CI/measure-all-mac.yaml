@@ -1,6 +1,6 @@
 trigger: none
 
-name: WinTimersMeasureAll_$(Rev:.r)
+name: MacTimersMeasureAll_$(Rev:.r)
 
 jobs:
 - template: measure-mac.yaml
