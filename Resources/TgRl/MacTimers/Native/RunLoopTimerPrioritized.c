@@ -20,6 +20,22 @@ void EmptyCallback(CFRunLoopTimerRef timer, void *info)
 {
 }
 
+void SetRealtimePriority()
+{
+    mach_timebase_info_data_t timebase;
+    mach_timebase_info(&timebase);
+
+    struct thread_time_constraint_policy constraintPolicy;
+
+    constraintPolicy.period = 500 * 1000 * timebase.denom / timebase.numer; // Period over which we demand scheduling.
+    constraintPolicy.computation = 100 * 1000 * timebase.denom / timebase.numer; // Minimum time in a period where we must be running.
+    constraintPolicy.constraint = 100 * 1000 * timebase.denom / timebase.numer; // Maximum time between start and end of our computation in the period.
+    constraintPolicy.preemptible = FALSE;
+
+    thread_port_t threadId = pthread_mach_thread_np(pthread_self());
+    thread_policy_set(threadId, THREAD_TIME_CONSTRAINT_POLICY, (thread_policy_t)&constraintPolicy, THREAD_TIME_CONSTRAINT_POLICY_COUNT);
+}
+
 void* TimerSessionThreadRoutine(void* data)
 {
     TimerSessionHandle* sessionHandle = (TimerSessionHandle*)data;
@@ -37,29 +53,12 @@ void* TimerSessionThreadRoutine(void* data)
     CFRunLoopRef runLoopRef = CFRunLoopGetCurrent();
 	CFRunLoopAddTimer(runLoopRef, timerRef, kCFRunLoopDefaultMode);
 	
-	// Set realtime priority
-    // (thanks to https://stackoverflow.com/a/44310370/2975589)
-
-    mach_timebase_info_data_t timebase;
-    mach_timebase_info(&timebase);
-
-    struct thread_time_constraint_policy constraintPolicy;
-
-    constraintPolicy.period = 500 * 1000 * timebase.denom / timebase.numer; // Period over which we demand scheduling.
-    constraintPolicy.computation = 100 * 1000 * timebase.denom / timebase.numer; // Minimum time in a period where we must be running.
-    constraintPolicy.constraint = 100 * 1000 * timebase.denom / timebase.numer; // Maximum time between start and end of our computation in the period.
-    constraintPolicy.preemptible = FALSE;
-
-    thread_port_t threadId = pthread_mach_thread_np(pthread_self());
-    thread_policy_set(threadId, THREAD_TIME_CONSTRAINT_POLICY, (thread_policy_t)&constraintPolicy, THREAD_TIME_CONSTRAINT_POLICY_COUNT);
-
-    //
+	SetRealtimePriority();
 
     sessionHandle->active = 1;
 	sessionHandle->runLoopRef = runLoopRef;
 
     CFRunLoopRun();
-
     return NULL;
 }
 
@@ -80,15 +79,15 @@ void TimerCallback(CFRunLoopTimerRef timer, void *info)
 	timerInfo->callback();
 }
 
-void StartTimer(int interval, TimerSessionHandle* sessionHandle, void (*callback)(void), TimerInfo** info)
+void StartTimer(int intervalMs, TimerSessionHandle* sessionHandle, void (*callback)(void), TimerInfo** info)
 {
     TimerInfo* timerInfo = malloc(sizeof(TimerInfo));
     timerInfo->callback = callback;
 	
-	double seconds = (double)interval / 1000.0;
+	double seconds = (double)intervalMs / 1000.0;
 	
 	CFRunLoopTimerContext context = { 0, timerInfo, NULL, NULL, NULL };
-	CFRunLoopTimerRef timerRef = CFRunLoopTimerCreate(
+	timerInfo->timerRef = CFRunLoopTimerCreate(
 	    NULL,
 		CFAbsoluteTimeGetCurrent() + seconds,
 		seconds,
@@ -96,10 +95,8 @@ void StartTimer(int interval, TimerSessionHandle* sessionHandle, void (*callback
 		0,
 		TimerCallback,
 		&context);
-
-    timerInfo->timerRef = timerRef;
 	CFRunLoopAddTimer(sessionHandle->runLoopRef, timerRef, kCFRunLoopDefaultMode);
-
+	
     *info = timerInfo;
 }
 
