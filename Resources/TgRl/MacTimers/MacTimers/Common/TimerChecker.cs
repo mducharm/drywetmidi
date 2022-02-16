@@ -51,7 +51,7 @@ namespace Common
                     var endCpuUsage = Process.GetCurrentProcess().TotalProcessorTime;
                     var cpuUsedMs = (float)(endCpuUsage - startCpuUsage).TotalMilliseconds;
                     var totalMsPassed = cpuUsageStopwatch.ElapsedMilliseconds - startTime;
-                    var cpuUsageTotal = cpuUsedMs / (Environment.ProcessorCount * totalMsPassed);
+                    var cpuUsageTotal = cpuUsedMs / totalMsPassed;
                     cpuUsage.Add(cpuUsageTotal * 100);
                 }
                 else
