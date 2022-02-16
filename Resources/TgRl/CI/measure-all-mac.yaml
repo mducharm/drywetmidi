@@ -24,3 +24,6 @@ jobs:
 - template: measure-mac.yaml
   parameters:
     project: 'RunLoopTimerPrioritized'
+- template: measure-mac.yaml
+  parameters:
+    project: 'RunLoopTimerPrioritizedWithTolerance'
