@@ -1,0 +1,24 @@
+trigger: none
+
+name: MacTimersBuildNative_$(Rev:.r)
+
+jobs:
+- job: BuildDylib64
+  displayName: 'Build RunLoopTimerPrioritized'
+  pool:
+    vmImage: 'macos-latest'
+  steps:
+  - task: PowerShell@2
+    displayName: 'Build RunLoopTimerPrioritized'
+    inputs:
+      targetType: 'inline'
+      script: |
+        cd Resources/TgRl/MacTimers/Native
+        gcc -c RunLoopTimerPrioritized.c
+        gcc -shared -framework CoreServices -framework CoreFoundation -o RunLoopTimerPrioritized.dylib RunLoopTimerPrioritized.o
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish RunLoopTimerPrioritized'
+    inputs:
+      targetPath: 'Resources/TgRl/MacTimers/Native/RunLoopTimerPrioritized.dylib'
+      artifactName: 'RunLoopTimerPrioritized.dylib'
+      artifactType: pipeline
