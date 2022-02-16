@@ -18,3 +18,9 @@ jobs:
 - template: measure-mac.yaml
   parameters:
     project: 'SystemTimersTimer'
+- template: measure-mac.yaml
+  parameters:
+    project: 'RunLoopTimer'
+- template: measure-mac.yaml
+  parameters:
+    project: 'RunLoopTimerPrioritized'

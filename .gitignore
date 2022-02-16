@@ -265,4 +265,5 @@ __pycache__/
 
 # Binaries
 *.dll
-*.dylib
+DryWetMidi/*.dylib
+DryWetMidi.Tests/*.dylib
