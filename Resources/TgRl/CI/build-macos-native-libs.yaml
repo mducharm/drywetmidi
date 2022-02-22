@@ -60,3 +60,22 @@ jobs:
       targetPath: 'Resources/TgRl/MacTimers/Native/RunLoopTimerPrioritizedWithTolerance.dylib'
       artifactName: 'RunLoopTimerPrioritizedWithTolerance.dylib'
       artifactType: pipeline
+- job: BuildInfiniteLoopTimerWithNanosleep
+  displayName: 'Build InfiniteLoopTimerWithNanosleep'
+  pool:
+    vmImage: 'macos-latest'
+  steps:
+  - task: PowerShell@2
+    displayName: 'Build InfiniteLoopTimerWithNanosleep'
+    inputs:
+      targetType: 'inline'
+      script: |
+        cd Resources/TgRl/MacTimers/Native
+        gcc -c InfiniteLoopTimerWithNanosleep.c
+        gcc -shared -framework CoreServices -framework CoreFoundation -o InfiniteLoopTimerWithNanosleep.dylib InfiniteLoopTimerWithNanosleep.o
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish InfiniteLoopTimerWithNanosleep'
+    inputs:
+      targetPath: 'Resources/TgRl/MacTimers/Native/InfiniteLoopTimerWithNanosleep.dylib'
+      artifactName: 'InfiniteLoopTimerWithNanosleep.dylib'
+      artifactType: pipeline
