@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RunLoopTimerPrioritized", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RunLoopTimerPrioritizedWithTolerance", "RunLoopTimerPrioritizedWithTolerance\RunLoopTimerPrioritizedWithTolerance.csproj", "{294F3811-0566-4AD2-BE05-DF205EF942DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfiniteLoopTimerWithSleepPrioritized", "InfiniteLoopTimerWithSleepPrioritized\InfiniteLoopTimerWithSleepPrioritized.csproj", "{E4CC5400-F603-4817-8BB5-4CE710E1C002}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfiniteLoopTimerWithSleepPrioritized", "InfiniteLoopTimerWithSleepPrioritized\InfiniteLoopTimerWithSleepPrioritized.csproj", "{E4CC5400-F603-4817-8BB5-4CE710E1C002}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfiniteLoopTimerWithNanosleep", "InfiniteLoopTimerWithNanosleep\InfiniteLoopTimerWithNanosleep.csproj", "{B03A1098-E6F4-48DF-8641-A35F4EA63018}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{E4CC5400-F603-4817-8BB5-4CE710E1C002}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4CC5400-F603-4817-8BB5-4CE710E1C002}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4CC5400-F603-4817-8BB5-4CE710E1C002}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B03A1098-E6F4-48DF-8641-A35F4EA63018}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B03A1098-E6F4-48DF-8641-A35F4EA63018}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B03A1098-E6F4-48DF-8641-A35F4EA63018}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B03A1098-E6F4-48DF-8641-A35F4EA63018}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
