@@ -1,4 +1,3 @@
-#include <CoreFoundation/CoreFoundation.h>
 #include <pthread.h>
 #include <time.h>
 
