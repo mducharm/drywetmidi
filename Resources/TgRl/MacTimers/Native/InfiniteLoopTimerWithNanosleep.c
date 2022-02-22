@@ -13,7 +13,7 @@ typedef struct
 void* TimerThreadRoutine(void* data)
 {
     TimerInfo* timerInfo = (TimerInfo*)data;
-    tickGeneratorInfo->active = 1;
+    timerInfo->active = 1;
 
     while (timerInfo->active == 1)
     {
