@@ -1,6 +1,8 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <pthread.h>
 #include <time.h>
+#include <mach/mach_time.h>
+#include <mach/mach.h>
 
 typedef struct
 {
