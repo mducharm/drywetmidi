@@ -20,6 +20,9 @@ jobs:
     project: 'InfiniteLoopTimerWithNanosleep'
 - template: measure-mac.yaml
   parameters:
+    project: 'InfiniteLoopTimerWithNanosleepPrioritized'
+- template: measure-mac.yaml
+  parameters:
     project: 'SystemThreadingTimer'
 - template: measure-mac.yaml
   parameters:
