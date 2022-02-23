@@ -39,7 +39,7 @@ void* TimerThreadRoutine(void* data)
     {
         struct timespec req;
         req.tv_sec = 0;
-        req.tv_nsec = 1000000;
+        req.tv_nsec = timerInfo->intervalMs * 1000000;
 		nanosleep(&req, NULL);
         
         timerInfo->callback();
