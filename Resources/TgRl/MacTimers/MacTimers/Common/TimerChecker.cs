@@ -45,7 +45,7 @@ namespace Common
 
             cpuTimer.Elapsed += (_, _) =>
             {
-                if (cpuStep++ % 2 != 0)
+                if (cpuStep++ > 0)
                 {
                     var cpuUsedMs = (float)(Process.GetCurrentProcess().TotalProcessorTime - startCpuUsage).TotalMilliseconds;
                     var totalMsPassed = cpuUsageStopwatch.ElapsedMilliseconds - startTime;
