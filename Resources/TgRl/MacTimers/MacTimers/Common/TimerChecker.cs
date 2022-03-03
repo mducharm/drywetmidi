@@ -47,18 +47,14 @@ namespace Common
             {
                 if (cpuStep++ % 2 != 0)
                 {
-                    var endTime = DateTime.UtcNow;
-                    var endCpuUsage = Process.GetCurrentProcess().TotalProcessorTime;
-                    var cpuUsedMs = (float)(endCpuUsage - startCpuUsage).TotalMilliseconds;
+                    var cpuUsedMs = (float)(Process.GetCurrentProcess().TotalProcessorTime - startCpuUsage).TotalMilliseconds;
                     var totalMsPassed = cpuUsageStopwatch.ElapsedMilliseconds - startTime;
                     var cpuUsageTotal = cpuUsedMs / totalMsPassed;
                     cpuUsage.Add(cpuUsageTotal * 100);
                 }
-                else
-                {
-                    startTime = cpuUsageStopwatch.ElapsedMilliseconds;
-                    startCpuUsage = Process.GetCurrentProcess().TotalProcessorTime;
-                }
+
+                startTime = cpuUsageStopwatch.ElapsedMilliseconds;
+                startCpuUsage = Process.GetCurrentProcess().TotalProcessorTime;
             };
             
             Action callback = () => times.Add(stopwatch.ElapsedMilliseconds);
