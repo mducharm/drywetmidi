@@ -1,0 +1,52 @@
+steps:
+- task: PowerShell@2
+  displayName: Setup csproj for core build
+  inputs:
+    targetType: 'inline'
+    script: |
+      $encoding = [System.Text.Encoding]::UTF8
+      $filePath = Resolve-Path "DryWetMidi\Melanchall.DryWetMidi.csproj"
+      $csproj = [xml]([System.IO.File]::ReadAllText($filePath, $encoding))
+            
+      $packageGroup = (Select-Xml -Xml $csproj.Project -XPath "//*[@Label='Package']").Node
+      Write-Host "Current 'Package' group:"
+      $packageGroup
+      $packageGroup.PackageId = "Melanchall.DryWetMidi.Core"
+      $description = $packageGroup.Description
+      $packageGroup.Description = $description -replace 'DryWetMIDI','!!! Please note that this is the version of the DryWetMIDI package without native dependencies. DryWetMIDI'
+      Write-Host "New 'Package' group:"
+      $packageGroup
+            
+      $nativeGroup = (Select-Xml -Xml $csproj.Project -XPath "//*[@Label='Native']").Node
+      Write-Host "'Native' group will be removed:"
+      $nativeGroup
+      $csproj.Project.RemoveChild($nativeGroup)
+            
+      $csproj.Save($filePath)
+      
+- task: PowerShell@2
+  displayName: Remove sources with native dependencies
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Host "Deleting sources with native dependencies..."
+      
+      $deleteFilesListPath = Resolve-Path "Resources\Core\delete-files-list.txt"
+      
+      foreach($line in Get-Content $deleteFilesListPath) {
+          if(-not $line) {
+              continue
+          }
+      
+          Write-Host "Deleting '$line'..." -NoNewline
+      
+          $filePath = Resolve-Path $line
+          Remove-Item -Path $filePath -Force -Recurse
+      
+          Write-Host "OK"
+      }
+      
+      Write-Host "Replacing HighPrecisionTickGenerator with RegularPrecisionTickGenerator..."
+      
+      $clockSettingsFilePath = Resolve-Path "DryWetMidi\Multimedia\Clock\MidiClockSettings.cs"
+      (Get-Content $clockSettingsFilePath) -replace 'HighPrecisionTickGenerator', 'RegularPrecisionTickGenerator' | Set-Content $clockSettingsFilePath
