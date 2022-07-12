@@ -7,7 +7,8 @@ steps:
       $encoding = [System.Text.Encoding]::UTF8
       $filePath = Resolve-Path "DryWetMidi\Melanchall.DryWetMidi.csproj"
       $csproj = [xml]([System.IO.File]::ReadAllText($filePath, $encoding))
-            
+      
+      Write-Host "Setting package metadata values..."        
       $packageGroup = (Select-Xml -Xml $csproj.Project -XPath "//*[@Label='Package']").Node
       Write-Host "Current 'Package' group:"
       $packageGroup
@@ -16,13 +17,16 @@ steps:
       $packageGroup.Description = $description -replace 'DryWetMIDI','!!! Please note that this is the version of the DryWetMIDI package without native dependencies. DryWetMIDI'
       Write-Host "New 'Package' group:"
       $packageGroup
-            
+                  
       $nativeGroup = (Select-Xml -Xml $csproj.Project -XPath "//*[@Label='Native']").Node
       Write-Host "'Native' group will be removed:"
       $nativeGroup
       $csproj.Project.RemoveChild($nativeGroup)
-            
+                  
       $csproj.Save($filePath)
+      
+      Write-Host "Setting icon path..."
+      (Get-Content $filePath) -replace 'icon.png', 'icon-core.png' | Set-Content $filePath
       
 - task: PowerShell@2
   displayName: Remove sources with native dependencies
